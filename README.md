@@ -1,4 +1,4 @@
-# Lletraferit
+# millor-primera-paraula-wordle
 Calculador de millor primera paraula pel wordle.
 
 ## Motivació

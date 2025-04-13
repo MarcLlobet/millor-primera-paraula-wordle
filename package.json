@@ -1,5 +1,5 @@
 {
-  "name": "lletraferit",
+  "name": "millor-primera-paraula-wordle",
   "version": "1.0.0",
   "description": "Calculador de millor primera paraula pel wordle.",
   "main": "index.js",
