@@ -89,21 +89,81 @@ const getPosicionsPerLletresInici = () => lletresAbecedari.reduce((prev, lletra
   [lletra]: getPosicions()
 }), {})
 
-const getPosicionsPerLletres = (paraules) => paraules.reduce((prevLletres, lletres) => ({
-  ...prevLletres,
-  ...lletres.reduce((prevLletra, lletra, posicio) => ({
-      ...prevLletra,
-      [lletra]: [
-        ...prevLletra[lletra].slice(0, posicio),
-        prevLletra[lletra][posicio] + 1,
-        ...prevLletra[lletra].slice(posicio + 1),
-      ]
-  }), prevLletres)
-}), getPosicionsPerLletresInici())
+const getTotalsPerLletresInici = () => lletresAbecedari.reduce((prev, lletra
+) => ({
+  ...prev,
+  [lletra]: 0
+}), {})
+
+const getPosicionsPerLletres = (paraules) => {
+  const posicionsPerLletres = getPosicionsPerLletresInici()
+
+  paraules.forEach(lletres => {
+    lletres.forEach((lletra, posicio) => {
+      posicionsPerLletres[lletra][posicio]++
+    })
+  })
+
+  return posicionsPerLletres
+}
+
+const getTotalsPerLletres = (paraules) => {
+  const totalsPerLletres = getTotalsPerLletresInici()
+
+  paraules.forEach(lletres => {
+    lletres.forEach((lletra) => {
+      totalsPerLletres[lletra]++
+    })
+  })
+
+  return totalsPerLletres
+}
+
+
+
+const getCounterLletres = ({
+  posicionsPerLletres, 
+  totalsPerLletres,
+  posicionsJaUsades, 
+  lletresJaUsades
+}) => {
+
+  const counterLletres = []
+  
+  Object
+    .entries(posicionsPerLletres)
+    .forEach(([lletra, llistaQuantitat]) => {
+      if(lletresJaUsades.includes(lletra)) return 
+
+      llistaQuantitat.forEach((quantitat, posicioLletra) => {
+        if(posicionsJaUsades.includes(posicioLletra)) return
+
+        const mateixaQuantitatAmbQUantitatTotalInferior = quantitat in counterLletres &&
+        totalsPerLletres[counterLletres[quantitat].lletra] >
+        totalsPerLletres[lletra]
+
+        if(mateixaQuantitatAmbQUantitatTotalInferior) {
+          return
+        }
+
+        counterLletres[quantitat] = { 
+          lletra, 
+          posicioLletra, 
+          quantitat, 
+          total: totalsPerLletres[lletra] 
+        }
+      })
+    })
+
+    return counterLletres
+}
+
 
 const getMillorParaula = ({ paraules, numLletres }) => {
   const lletresDeParaules = paraules
     .map(paraula => paraula.split(''))
+
+  const totalsPerLletres = getTotalsPerLletres(lletresDeParaules)
 
   let restaLletresDeParaules = [...lletresDeParaules]
   let lletresJaUsades = []
@@ -114,36 +174,30 @@ const getMillorParaula = ({ paraules, numLletres }) => {
   while(posicionsJaUsades.length < numLletres){
     const posicionsPerLletres = getPosicionsPerLletres(restaLletresDeParaules)
 
-    Object.entries(posicionsPerLletres)
-    .filter(([lletra]) => !lletresJaUsades.includes(lletra))
-    .forEach(([lletra, llistaQuantitat]) => {
-      llistaQuantitat
-      .forEach((quantitat, posicioLletra) => {
-        if(posicionsJaUsades.includes(posicioLletra)){
-          return
-        }
-        if(maxLletraPerQuantitat.quantitat >= quantitat){
-          return
-        }
-
-        maxLletraPerQuantitat = {
-          lletra,
-          quantitat,
-          posicioLletra,
-        }
-
-        millorLletres[posicioLletra] = lletra
-        
-      })
+    const counterLletres = getCounterLletres({
+      posicionsPerLletres, 
+      totalsPerLletres,
+      posicionsJaUsades, 
+      lletresJaUsades
     })
+
+    maxLletraPerQuantitat = counterLletres.at(-1)
+
+    millorLletres[maxLletraPerQuantitat.posicioLletra] = maxLletraPerQuantitat.lletra
 
     console.log(maxLletraPerQuantitat)
 
-    posicionsJaUsades.push(maxLletraPerQuantitat.posicioLletra)
-    lletresJaUsades.push(maxLletraPerQuantitat.lletra)
-    maxLletraPerQuantitat.quantitat = 0
+    posicionsJaUsades = [
+      ...posicionsJaUsades, 
+      maxLletraPerQuantitat.posicioLletra
+    ]
+    lletresJaUsades = [
+      ...lletresJaUsades, 
+      maxLletraPerQuantitat.lletra
+    ]
 
-    restaLletresDeParaules = restaLletresDeParaules.filter((llistaLletres) => 
+    restaLletresDeParaules = restaLletresDeParaules
+    .filter((llistaLletres) => 
       llistaLletres[maxLletraPerQuantitat.posicioLletra] === maxLletraPerQuantitat.lletra
     )
   }
