@@ -57,8 +57,10 @@ const getEntradesPerParaula = (paraules) => {
 
   const paraulesArrel = paraulesPerLlargada.filter(({origen, derivada}) => origen === derivada)
 
-  const entradesPerParaula = paraulesArrel.reduce((prev, entrada) => {
-    const paraulaSenseAccents = eliminaAccents(entrada.origen.toLowerCase())
+  const entradesPerParaula = paraulesArrel
+  .filter(({origen}) => origen.toLowerCase() === origen)
+  .reduce((prev, entrada) => {
+    const paraulaSenseAccents = eliminaAccents(entrada.origen)
     const paraulaAmbCaractersValids = paraulaSenseAccents
       .split('')
       .every(lletra => ABECEDARI.includes(lletra)
@@ -78,141 +80,89 @@ const getEntradesPerParaula = (paraules) => {
 const entradesPerParaula = getEntradesPerParaula(totesLesEntrades)
 const totesLesParaules = Object.keys(entradesPerParaula)
 
-// mètodes per getMillorParaula
 
-const getPosicions = () => Array(QUANTITAT_LLETRES).fill().map(() => 0)
+const getPosicions = () => Array(QUANTITAT_LLETRES).fill().map((_, posicio) => ({ quantitat: 0, posicio}))
 
 const lletresAbecedari = ABECEDARI.split('')
-const getPosicionsPerLletresInici = () => lletresAbecedari.reduce((prev, lletra
-) => ({
+
+const diccionariLletres = lletresAbecedari.reduce((prev, lletra) => ({
   ...prev,
-  [lletra]: getPosicions()
-}), {})
-
-const getTotalsPerLletresInici = () => lletresAbecedari.reduce((prev, lletra
-) => ({
-  ...prev,
-  [lletra]: 0
-}), {})
-
-const getPosicionsPerLletres = (paraules) => {
-  const posicionsPerLletres = getPosicionsPerLletresInici()
-
-  paraules.forEach(lletres => {
-    lletres.forEach((lletra, posicio) => {
-      posicionsPerLletres[lletra][posicio]++
-    })
-  })
-
-  return posicionsPerLletres
-}
-
-const getTotalsPerLletres = (paraules) => {
-  const totalsPerLletres = getTotalsPerLletresInici()
-
-  paraules.forEach(lletres => {
-    lletres.forEach((lletra) => {
-      totalsPerLletres[lletra]++
-    })
-  })
-
-  return totalsPerLletres
-}
-
-
-
-const getCounterLletres = ({
-  posicionsPerLletres, 
-  totalsPerLletres,
-  posicionsJaUsades, 
-  lletresJaUsades
-}) => {
-
-  const counterLletres = []
-  
-  Object
-    .entries(posicionsPerLletres)
-    .forEach(([lletra, llistaQuantitat]) => {
-      if(lletresJaUsades.includes(lletra)) return 
-
-      llistaQuantitat.forEach((quantitat, posicioLletra) => {
-        if(posicionsJaUsades.includes(posicioLletra)) return
-
-        const mateixaQuantitatAmbQUantitatTotalInferior = quantitat in counterLletres &&
-        totalsPerLletres[counterLletres[quantitat].lletra] >
-        totalsPerLletres[lletra]
-
-        if(mateixaQuantitatAmbQUantitatTotalInferior) {
-          return
-        }
-
-        counterLletres[quantitat] = { 
-          lletra, 
-          posicioLletra, 
-          quantitat, 
-          total: totalsPerLletres[lletra] 
-        }
-      })
-    })
-
-    return counterLletres
-}
-
-
-const getMillorParaula = ({ paraules, numLletres }) => {
-  const lletresDeParaules = paraules
-    .map(paraula => paraula.split(''))
-
-  const totalsPerLletres = getTotalsPerLletres(lletresDeParaules)
-
-  let restaLletresDeParaules = [...lletresDeParaules]
-  let lletresJaUsades = []
-  let posicionsJaUsades = []
-  let maxLletraPerQuantitat = { quantitat: 0 }
-  let millorLletres = []
-
-  while(posicionsJaUsades.length < numLletres){
-    const posicionsPerLletres = getPosicionsPerLletres(restaLletresDeParaules)
-
-    const counterLletres = getCounterLletres({
-      posicionsPerLletres, 
-      totalsPerLletres,
-      posicionsJaUsades, 
-      lletresJaUsades
-    })
-
-    maxLletraPerQuantitat = counterLletres.at(-1)
-
-    millorLletres[maxLletraPerQuantitat.posicioLletra] = maxLletraPerQuantitat.lletra
-
-    console.log(maxLletraPerQuantitat)
-
-    posicionsJaUsades = [
-      ...posicionsJaUsades, 
-      maxLletraPerQuantitat.posicioLletra
-    ]
-    lletresJaUsades = [
-      ...lletresJaUsades, 
-      maxLletraPerQuantitat.lletra
-    ]
-
-    restaLletresDeParaules = restaLletresDeParaules
-    .filter((llistaLletres) => 
-      llistaLletres[maxLletraPerQuantitat.posicioLletra] === maxLletraPerQuantitat.lletra
-    )
+  [lletra]: {
+    lletra,
+    posicions: getPosicions(),
+    total: 0
   }
+}), {})
 
-  const millorParaula = millorLletres.join('')
-  const millorEntrada = entradesPerParaula[millorParaula]
+totesLesParaules.forEach(paraula => 
+  paraula.split('').forEach((lletra, index) => {
+    const lletraDiccionari = diccionariLletres[lletra]
+    lletraDiccionari.posicions[index].quantitat++
+    lletraDiccionari.total++
+  })
+)
 
-  return millorEntrada
-}
+let paraulesRestants = totesLesParaules
+  .filter(paraula => paraula.length === new Set(paraula).size)
 
-const millorParaula = getMillorParaula({
-  paraules: totesLesParaules, 
-  numLletres: QUANTITAT_LLETRES
-})
+let lletresOrdenades = Object.values(diccionariLletres)
+  .map(lletra => ({
+    ...lletra,
+    posicions: lletra.posicions.sort((a, b) => b.quantitat - a.quantitat)
+  }))
+  .sort((a, b) => b.total - a.total)
 
-console.log(millorParaula)
 
-console.timeEnd('performance')
+  const millorLletres = Array(QUANTITAT_LLETRES).fill().reduce((prev) => {
+    
+    seguentLletra = lletresOrdenades.find(({posicions, lletra}) => {
+      if(prev.lletresJaUsades?.includes(lletra)) return
+
+      seguentPosicio = posicions.find(({posicio}) => {
+        if(prev.posicionsJaUsades?.includes(posicio)) return
+
+        return prev.paraulesRestants.find(paraula => 
+          lletra === paraula[posicio]
+        )}
+      )
+      return !!seguentPosicio
+      }
+    )
+    console.log({seguentLletra, seguentPosicio})
+    
+
+    return {
+      paraulesRestants: prev?.paraulesRestants.filter(paraula => paraula  [seguentPosicio.posicio] === seguentLletra.lletra),
+      lletres: [
+        ...prev?.lletres,
+        {
+          ...seguentLletra,
+          posicio: seguentPosicio
+        }
+      ],
+      posicionsJaUsades: [
+        ...prev?.posicionsJaUsades,
+        seguentPosicio.posicio,
+      ],
+      lletresJaUsades: [
+        ...prev?.lletresJaUsades,
+        seguentLletra.lletra,
+      ]
+    }
+
+  }, {
+    paraulesRestants,
+    lletres: [],
+    posicionsJaUsades: [],
+    lletresJaUsades: [],
+  })
+
+const millorParaula = []
+
+millorLletres.lletres.forEach(({lletra, posicio}) => 
+  millorParaula[posicio.posicio] = lletra
+)
+
+const millorEntrada = entradesPerParaula[millorParaula.join('')]
+
+console.log({millorEntrada})
