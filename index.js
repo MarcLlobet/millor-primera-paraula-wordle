@@ -1,6 +1,30 @@
 const fs = require('fs');
 const diccionari = fs.readFileSync('./diccionari/index.txt', 'utf-8');
+const QUANTITAT_LLETRES_PER_DEFECTE = 5
+const MAX_QUANTITAT_LLETRES = 7
+const MIN_QUANTITAT_LLETRES = 3
 
+const NUM_LLETRES = process.env.NUM_LLETRES
+
+const getLettersAmountParam = (numLletresParam) => {
+  if(!numLletresParam) return QUANTITAT_LLETRES_PER_DEFECTE
+
+  const quantitatLletresParametre = Number(process.env.NUM_LLETRES)
+
+  const esUnNumero = !!quantitatLletresParametre && !Number.isNaN(quantitatLletresParametre)
+
+  if(!esUnNumero) return QUANTITAT_LLETRES_PER_DEFECTE
+
+  const numeroLimitat = Math.max(Math.min(quantitatLletresParametre, MAX_QUANTITAT_LLETRES), MIN_QUANTITAT_LLETRES)
+
+  return numeroLimitat === quantitatLletresParametre 
+    ? numeroLimitat 
+    : QUANTITAT_LLETRES_PER_DEFECTE
+}
+
+const QUANTITAT_LLETRES = getLettersAmountParam(NUM_LLETRES)
+
+console.log({QUANTITAT_LLETRES})
 
 const lineas = diccionari.split('\n')
 
@@ -21,7 +45,7 @@ const eliminaAccents = (paraula) =>
     .replace(/c(?=̧)/g, "ç");
 
 const paraulesOriginals = entrades
-  .filter(({origen}) => origen?.length === 5)
+  .filter(({origen}) => origen?.length === QUANTITAT_LLETRES)
   .filter(({origen, derivada}) => origen === derivada)
   .reduce((prev, entrada) => {
     const newOrigen = eliminaAccents(entrada.origen.toLowerCase())
@@ -35,7 +59,7 @@ const paraulesNormalitzades = Object.keys(paraulesOriginals)
 
 const ABECEDARI = 'abcçdefghijklmnopqrstuvwxyz'
 
-const getLlistaPosicio = () => Array(5).fill().map(() => 0)
+const getLlistaPosicio = () => Array(QUANTITAT_LLETRES).fill().map(() => 0)
 
 const lletresPerindex = ABECEDARI.split('')
 const getPosicioPerLletra = () => lletresPerindex.reduce((prev, lletra
@@ -44,7 +68,17 @@ const getPosicioPerLletra = () => lletresPerindex.reduce((prev, lletra
   [lletra]: getLlistaPosicio()
 }), {})
 
-const llistaLletresDeParaules = paraulesNormalitzades.map(paraula => paraula.split(''))
+const getTotalPerLletra = () => lletresPerindex.reduce((prev, lletra
+) => ({
+  ...prev,
+  [lletra]: 0
+}), {})
+
+const llistaLletresDeParaules = paraulesNormalitzades
+.map(paraula => paraula.split(''))
+.filter(paraula => 
+  paraula.every(lletra => ABECEDARI.includes(lletra))
+)
 
 
 
@@ -52,20 +86,20 @@ let restaLlistaLletraDeParaules = [...llistaLletresDeParaules]
 let lletresJaUsades = []
 let posicionsJaUsades = []
 let maxLletraPerQuantitat = { quantitat: 0 }
-let millorParaula = []
+let millorLletres = []
 
-while(posicionsJaUsades.length <= 5){
+while(posicionsJaUsades.length < QUANTITAT_LLETRES){
 
   const posicioPerLletra = getPosicioPerLletra()
+  const totalPerLletra = getTotalPerLletra()
   restaLlistaLletraDeParaules.forEach((llistaLletres) => {
     llistaLletres.forEach((lletra, index) => {
-      if(ABECEDARI.includes(lletra) && index in posicioPerLletra[lletra]){
+      totalPerLletra[lletra]++
+      if(index in posicioPerLletra[lletra]){
         posicioPerLletra[lletra][index]++
       }
     })
   })
-
-  console.log('posicioPerLletra', posicioPerLletra)
 
 
   Object.entries(posicioPerLletra)
@@ -87,7 +121,7 @@ while(posicionsJaUsades.length <= 5){
         posicioLletra,
       }
 
-      millorParaula[posicioLletra] = lletra
+      millorLletres[posicioLletra] = lletra
       
     })
   })
@@ -104,9 +138,7 @@ while(posicionsJaUsades.length <= 5){
 
 }
 
-console.log(millorParaula, restaLlistaLletraDeParaules)
+const millorParaula = millorLletres.join('')
 
-let y = millorParaula.join('')
-
-let x = paraulesOriginals[y]
-console.log(x, y)
+const millorEntrada = paraulesOriginals[millorParaula]
+console.log(millorEntrada)
