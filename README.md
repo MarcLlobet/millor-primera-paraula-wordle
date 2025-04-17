@@ -10,32 +10,19 @@ Aquest projecte intenta construir l'algoritme més refinat per trobar la paraula
 L'Script pren el diccionari que li coloquis amb un format LanguageTool, el llegeix i torna una paraula.
 
 ### Algortime
-1) ens interessa la lletra que tingui un valor total de coincidències (comptant també les paraules en que es repeteix).
-Hem de tenir en compte dues vegades la 'a' a la paraula 'taula', encara que després no ens interessi utilitzar-la.
-2) utilitzarem la posició total més coincident.
-De totes les paraules, necessitem saber quin número de vegades s'utilitza cada lletra en cada posició. Aquest serà la *posició total*.
-3) si no hi ha paraula en la *posició total* més coincident, utilitzarem el valor de posició de les paraules restants.
-Sacrifiquem la posició total, per la restant, en pro d'utilitzar les lletres més coincidents.
-4) Cada vegada que fem aquests passos, hem de filtrar les paraules. Si no, podem arribar a un atzucac, on no existeixen paraules amb aquelles lletres.
 
-Necessitem:
-
-`
-coincidenciesPerPosicio = {
-  a: [10,2,3,5,6],
-  ...
-}
-`
-
-`
-totals = {
-  a: 26,
-  ...
-}
-`
-
-[boira]
-[_oi_a]
+- Filtrem el diccionari per paraules de la llargada
+- Enumerem les coincidencies de lletres en totes les paraules
+- Enumerem les coincidencies de lletres en cada una de les posicions
+- Ordenem les lletres per quantitat de coincidencia
+- Ordenem les posicions per quantitat de coincidencia
+- Busquem lletres fins que en tinguem tantes com desitjades, per defecte 5:
+1) Prenem la següent lletra no utilitzada
+2) prenem la següent posicio no utilitzada
+3) busquem una paraula amb aquesta lletra
+    - Si existeix, guardem la lletra i la posicio com a utilitzades
+    - Si no existeix, tornem al pas 2, fins que comprovem totes les posicions
+    - Si no existeix cap paraula, en cap posicio, amb la lletra, tornem al pas 1
 
 ## Ús
 

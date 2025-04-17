@@ -45,35 +45,60 @@ const getEntrades = (diccionari) => {
 const totesLesEntrades = getEntrades(diccionari)
 
 const ABECEDARI = 'abcçdefghijklmnopqrstuvwxyz'
-const eliminaAccents = (paraula) => 
-  paraula
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/c(?=̧)/g, "ç")
+
+const MARCA_C_TRENCADA = 'MARCA_C_TRENCADA'
+
+const filtradorItems = (items, filtres) => filtres.reduce((prevItems, filtre) => 
+  prevItems.filter(filtre)
+, items)
+
+const manipulaItems = (items, manipulacions) => manipulacions.reduce((prevItems, manipulacio) => manipulacio(prevItems)
+, items)
+
+const manipulaReferenciaLaCTrencada = (paraula) => paraula.replace(/ç/g, MARCA_C_TRENCADA)
+
+const manipulaParaulesNormalitzades = (paraula) => paraula.normalize("NFD")
+const manipulaParaulaSenseTitlles = (paraula) => paraula.replace(/[\u0300-\u036f]/g, "")
+const manipulaRecuperarLaCTrencada = (paraula) => paraula.replace(/__TEMPÇ__/g, "ç")
+
+const filtreCaractersValids = (paraula) => 
+  manipulaItems(paraula, [
+    manipulaReferenciaLaCTrencada,
+    manipulaParaulesNormalitzades,
+    manipulaParaulaSenseTitlles,
+    manipulaRecuperarLaCTrencada
+  ])
+
+const filtreQuantitatLletres = ({ origen }) => origen?.length === QUANTITAT_LLETRES
+const filtreInfinitius = ({ origen, derivada }) => origen === derivada
+const filtreNomsPropis = ({ origen }) => origen.toLowerCase() === origen
+const filtreCaractersAbecedari = ({ origen }) => {
+  const paraulaAmbCaractersValids = filtreCaractersValids(origen)
+  return paraulaAmbCaractersValids
+    .split('')
+    .every(lletra => ABECEDARI.includes(lletra)
+  )
+}
 
 const getEntradesPerParaula = (paraules) => {
-  const paraulesPerLlargada = paraules
-  .filter(({origen}) => origen?.length === QUANTITAT_LLETRES)
+  
+  const entradesFiltrades = filtradorItems(paraules, [
+    filtreQuantitatLletres,
+    filtreInfinitius,
+    filtreNomsPropis,
+    filtreCaractersAbecedari
+  ])
 
-  const paraulesArrel = paraulesPerLlargada.filter(({origen, derivada}) => origen === derivada)
-
-  const entradesPerParaula = paraulesArrel
-  .filter(({origen}) => origen.toLowerCase() === origen)
-  .reduce((prev, entrada) => {
-    const paraulaSenseAccents = eliminaAccents(entrada.origen)
-    const paraulaAmbCaractersValids = paraulaSenseAccents
-      .split('')
-      .every(lletra => ABECEDARI.includes(lletra)
-    )
-
-    if(!paraulaAmbCaractersValids) return prev
+  
+  const entradesPerParaula =  entradesFiltrades.reduce((prev, entrada) => {
+    const paraulaAmbCaractersValids = filtreCaractersValids(entrada.origen)
 
     return {
       ...prev,
-      [paraulaSenseAccents]: entrada
+      [paraulaAmbCaractersValids]: entrada
     }
   }, {})
-  
+
   return entradesPerParaula
 }
 
@@ -166,3 +191,5 @@ millorLletres.lletres.forEach(({lletra, posicio}) =>
 const millorEntrada = entradesPerParaula[millorParaula.join('')]
 
 console.log({millorEntrada})
+
+console.timeEnd('performance')
