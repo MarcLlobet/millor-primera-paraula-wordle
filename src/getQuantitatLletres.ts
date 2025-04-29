@@ -1,6 +1,6 @@
-const QUANTITAT_LLETRES_PER_DEFECTE = 5;
-const MAX_QUANTITAT_LLETRES = 7;
-const MIN_QUANTITAT_LLETRES = 3;
+export const QUANTITAT_LLETRES_PER_DEFECTE = 5;
+export const MAX_QUANTITAT_LLETRES = 7;
+export const MIN_QUANTITAT_LLETRES = 3;
 
 export const getLettersAmountParam = (numLletresParam: string | undefined): number => {
   if (!numLletresParam) return QUANTITAT_LLETRES_PER_DEFECTE;

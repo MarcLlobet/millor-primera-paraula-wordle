@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "Calculador de millor primera paraula pel wordle.",
   "scripts": {
-    "start": "ts-node index.ts $NUM_LLETRES"
+    "start": "ts-node index.ts $NUM_LLETRES",
+    "test": "jest"
   },
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^22.14.1",
+    "@types/jest": "^29.0.0",
+    "@types/node": "^22.15.3",
     "fs": "^0.0.1-security",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
