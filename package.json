@@ -2,9 +2,14 @@
   "name": "millor-primera-paraula-wordle",
   "version": "1.0.0",
   "description": "Calculador de millor primera paraula pel wordle.",
-  "main": "index.js",
   "scripts": {
-    "start": "node index.js $NUM_LLETRES"
+    "start": "ts-node index.ts $NUM_LLETRES"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "fs": "^0.0.1-security",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
 }
