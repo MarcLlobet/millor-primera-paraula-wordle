@@ -1,0 +1,34 @@
+name: CI 🚀
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository 🛠️
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 🖥️
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'node'
+
+      - name: Install Yarn 📦
+        run: npm install --global yarn
+
+      - name: Install dependencies with Yarn 📥
+        run: yarn install
+
+      - name: TypeScript check ✅
+        run: yarn tsc --noEmit
+
+      - name: Run tests 🧪
+        run: yarn test
