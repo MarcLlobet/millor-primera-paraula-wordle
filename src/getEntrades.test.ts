@@ -2,8 +2,9 @@ import { getEntrades, getEntradesPerParaula } from './getEntrades';
 import { Entrada } from './types';
 
 describe('getEntrades', () => {
-  it('hauria de convertir el diccionari en una llista d\'entrades', () => {
-    const diccionari = 'derivada1 origen1 definicio1\nderivada2 origen2 definicio2';
+  it("hauria de convertir el diccionari en una llista d'entrades", () => {
+    const diccionari =
+      'derivada1 origen1 definicio1\nderivada2 origen2 definicio2';
     const result = getEntrades(diccionari);
     expect(result).toEqual([
       { derivada: 'derivada1', origen: 'origen1', definicio: 'definicio1' },

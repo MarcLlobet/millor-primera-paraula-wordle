@@ -41,12 +41,20 @@ describe('filtreQuantitatLletres', () => {
 
 describe('filtreInfinitius', () => {
   it('hauria de filtrar entrades on origen i derivada són iguals', () => {
-    const entrada: Entrada = { derivada: 'cantar', origen: 'cantar', definicio: '' };
+    const entrada: Entrada = {
+      derivada: 'cantar',
+      origen: 'cantar',
+      definicio: '',
+    };
     expect(filtreInfinitius(entrada)).toBe(true);
   });
 
   it('hauria de rebutjar entrades on origen i derivada són diferents', () => {
-    const entrada: Entrada = { derivada: 'cantar', origen: 'cantant', definicio: '' };
+    const entrada: Entrada = {
+      derivada: 'cantar',
+      origen: 'cantant',
+      definicio: '',
+    };
     expect(filtreInfinitius(entrada)).toBe(false);
   });
 });
@@ -57,19 +65,19 @@ describe('filtreNomsPropis', () => {
     expect(filtreNomsPropis(entrada)).toBe(false);
   });
 
-  it('hauria d\'acceptar noms no propis', () => {
+  it("hauria d'acceptar noms no propis", () => {
     const entrada: Entrada = { derivada: '', origen: 'nom', definicio: '' };
     expect(filtreNomsPropis(entrada)).toBe(true);
   });
 });
 
 describe('filtreCaractersAbecedari', () => {
-  it('hauria de filtrar paraules amb caràcters dins de l\'abecedari', () => {
+  it("hauria de filtrar paraules amb caràcters dins de l'abecedari", () => {
     const entrada: Entrada = { derivada: '', origen: 'abcç', definicio: '' };
     expect(filtreCaractersAbecedari(entrada)).toBe(true);
   });
 
-  it('hauria de rebutjar paraules amb caràcters fora de l\'abecedari', () => {
+  it("hauria de rebutjar paraules amb caràcters fora de l'abecedari", () => {
     const entrada: Entrada = { derivada: '', origen: 'abc1', definicio: '' };
     expect(filtreCaractersAbecedari(entrada)).toBe(false);
   });

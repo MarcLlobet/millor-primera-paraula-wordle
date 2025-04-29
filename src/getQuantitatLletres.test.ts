@@ -1,9 +1,13 @@
-import { getLettersAmountParam, MAX_QUANTITAT_LLETRES, MIN_QUANTITAT_LLETRES, QUANTITAT_LLETRES_PER_DEFECTE } from './getQuantitatLletres';
-
+import {
+  getLettersAmountParam,
+  QUANTITAT_LLETRES_PER_DEFECTE,
+} from './getQuantitatLletres';
 
 describe('getLettersAmountParam', () => {
   it('hauria de retornar el valor per defecte si no es passa cap paràmetre', () => {
-    expect(getLettersAmountParam(undefined)).toBe(QUANTITAT_LLETRES_PER_DEFECTE);
+    expect(getLettersAmountParam(undefined)).toBe(
+      QUANTITAT_LLETRES_PER_DEFECTE,
+    );
   });
 
   it('hauria de retornar el valor per defecte si el paràmetre no és un número', () => {

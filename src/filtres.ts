@@ -1,11 +1,17 @@
-import { ABECEDARI } from "./constants";
-import { QUANTITAT_LLETRES } from "./getQuantitatLletres";
-import { Entrada } from "./types";
+import { ABECEDARI } from './constants';
+import { QUANTITAT_LLETRES } from './getQuantitatLletres';
+import { Entrada } from './types';
 
 const MARCA_C_TRENCADA = 'MARCA_C_TRENCADA';
 
-const manipulaParaula = (paraula: string, manipulacions: ((paraula: string) => string)[]): string =>
-  manipulacions.reduce((paraulaModificada, manipulacio) => manipulacio(paraulaModificada), paraula);
+const manipulaParaula = (
+  paraula: string,
+  manipulacions: ((paraula: string) => string)[],
+): string =>
+  manipulacions.reduce(
+    (paraulaModificada, manipulacio) => manipulacio(paraulaModificada),
+    paraula,
+  );
 
 const manipulaReferenciaLaCTrencada = (paraula: string): string =>
   paraula.replace(/ç/g, MARCA_C_TRENCADA);
@@ -25,7 +31,10 @@ export const filtreCaractersValids = (paraula: string): string =>
     manipulaRecuperarLaCTrencada,
   ]);
 
-export const filtradorItems = <T>(items: T[], filtres: ((item: T) => boolean)[]): T[] =>
+export const filtradorItems = <T>(
+  items: T[],
+  filtres: ((item: T) => boolean)[],
+): T[] =>
   filtres.reduce((prevItems, filtre) => prevItems.filter(filtre), items);
 
 export const filtreQuantitatLletres = ({ origen }: Entrada): boolean =>
@@ -44,5 +53,5 @@ export const filtreCaractersAbecedari = ({ origen }: Entrada): boolean => {
     .every((lletra) => ABECEDARI.includes(lletra));
 };
 
-export const filtreCaractersUnics = (paraula: string): boolean => 
-    paraula.length === new Set(paraula).size
+export const filtreCaractersUnics = (paraula: string): boolean =>
+  paraula.length === new Set(paraula).size;

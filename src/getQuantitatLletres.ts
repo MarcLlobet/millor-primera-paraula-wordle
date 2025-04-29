@@ -2,7 +2,9 @@ export const QUANTITAT_LLETRES_PER_DEFECTE = 5;
 export const MAX_QUANTITAT_LLETRES = 7;
 export const MIN_QUANTITAT_LLETRES = 3;
 
-export const getLettersAmountParam = (numLletresParam: string | undefined): number => {
+export const getLettersAmountParam = (
+  numLletresParam: string | undefined,
+): number => {
   if (!numLletresParam) return QUANTITAT_LLETRES_PER_DEFECTE;
 
   const quantitatLletresParametre = Number(numLletresParam);
@@ -13,7 +15,7 @@ export const getLettersAmountParam = (numLletresParam: string | undefined): numb
 
   const numeroLimitat = Math.max(
     Math.min(quantitatLletresParametre, MAX_QUANTITAT_LLETRES),
-    MIN_QUANTITAT_LLETRES
+    MIN_QUANTITAT_LLETRES,
   );
 
   return numeroLimitat === quantitatLletresParametre
