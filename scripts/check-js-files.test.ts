@@ -13,7 +13,7 @@ describe('checkJsFiles', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
-    // @ts-ignore
+    // @ts-expect-error
     process.exit = mockProcessExit;
   });
   afterEach(() => {
