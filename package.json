@@ -4,12 +4,13 @@
   "description": "Calculador de millor primera paraula pel wordle.",
   "scripts": {
     "start": "ts-node index.ts $NUM_LLETRES",
-    "test": "jest",
     "prettier": "prettier --write .",
-    "eslint": "eslint . --ext .ts"
+    "eslint": "eslint . --ext .ts",
+    "check-js-files": "yarn ts-node scripts/check-js-files.ts"
   },
   "license": "ISC",
   "devDependencies": {
+    "@types/glob": "^8.1.0",
     "@types/jest": "^29.0.0",
     "@types/node": "^22.15.3",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
