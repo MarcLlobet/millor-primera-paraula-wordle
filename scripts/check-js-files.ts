@@ -24,7 +24,11 @@ export const searchCallback = (error: Error | null, files: string[]) => {
 };
 
 export const checkJsFiles = (): void => {
-  glob('**/*.js', { ignore: 'node_modules/**' }, searchCallback);
+  glob(
+    '**/*.js',
+    { ignore: ['node_modules/**', 'coverage/**'] },
+    searchCallback,
+  );
 };
 
 export default checkJsFiles();

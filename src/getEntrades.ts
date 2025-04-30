@@ -11,15 +11,17 @@ import { Entrada } from './types';
 export const getEntrades = (diccionari: string): Entrada[] => {
   const lineas = diccionari.split('\n');
 
-  return lineas.map((entrada) => {
-    const [derivada = '', origen = '', definicio = ''] =
-      entrada.split(' ') ?? [];
-    return {
-      derivada,
-      origen,
-      definicio,
-    };
-  });
+  const llistaEntrada = lineas
+    .map((entrada) => entrada.split(' '))
+    .filter((entrada) => entrada.length === 3);
+
+  const entradaObjecte = llistaEntrada.map(([derivada, origen, definicio]) => ({
+    derivada,
+    origen,
+    definicio,
+  }));
+
+  return entradaObjecte;
 };
 
 export const getEntradesPerParaula = (
