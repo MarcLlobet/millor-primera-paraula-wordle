@@ -35,8 +35,9 @@ jobs:
 
       - name: Cache Yarn dependencies 📦
         uses: actions/cache@v3
+        id: cache
         with:
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
           path: |
             ~/.cache/yarn
             ~/.yarn-cache
@@ -44,6 +45,7 @@ jobs:
             .tsbuildinfo
 
       - name: Install dependencies with Yarn 📥
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install
 
       - name: Run Prettier 🖌️
@@ -70,10 +72,8 @@ jobs:
       - name: Upload static files as artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: coverage/lcov-report/
+          path: .
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          publish_dir: coverage/

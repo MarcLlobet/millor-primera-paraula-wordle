@@ -8,7 +8,7 @@ const config: Config = {
   rootDir: '.',
   silent: true,
   collectCoverageFrom: ['src/**/*.ts', 'scripts/**/*.ts', '!src/**/*.d.ts'],
-  coverageReporters: ['lcov', ['text', { skipFull: true }]],
+  coverageReporters: ['html', ['text', { skipFull: true }]],
 };
 
 export default config;
