@@ -4,7 +4,7 @@ import glob from 'glob';
 const consoleLogSpy = jest.spyOn(console, 'log');
 const consoleErrorSpy = jest.spyOn(console, 'error');
 
-const mockProcessExit = jest.fn();
+const mockProcessExit = jest.fn() as jest.Mock<never>;
 
 jest.mock('glob');
 
@@ -13,7 +13,7 @@ describe('checkJsFiles', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
-    // @ts-expect-error
+
     process.exit = mockProcessExit;
   });
   afterEach(() => {
