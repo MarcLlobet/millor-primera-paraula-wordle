@@ -7,10 +7,19 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository 🛠️
@@ -28,6 +37,11 @@ jobs:
         uses: actions/cache@v3
         with:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            ~/.cache/yarn
+            ~/.yarn-cache
+            node_modules
+            .tsbuildinfo
 
       - name: Install dependencies with Yarn 📥
         run: yarn install
@@ -50,10 +64,14 @@ jobs:
       - name: Run coverage 🧪
         run: yarn jest --coverage
 
-      - name: Deploy coverage to GitHub Pages 🚀
-        uses: peaceiris/actions-gh-pages@v4
-        if: github.ref == 'refs/heads/main'
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload static files as artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./coverage/lcov-report/
-          destination_dir: coverage
+          path: coverage/lcov-report/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
