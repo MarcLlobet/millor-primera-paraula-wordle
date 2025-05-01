@@ -1,0 +1,9 @@
+{
+  "*": "prettier --write",
+  "*.js": "tsc scripts/check-js-files.ts",
+  "*.ts": [
+    "eslint --fix",
+    "tsc --project tsconfig.json --noEmit",
+    "cross-env NODE_ENV=test jest --bail --findRelatedTests"
+  ]
+}

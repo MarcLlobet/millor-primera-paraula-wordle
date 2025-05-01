@@ -5,14 +5,14 @@ import {
   filtreInfinitius,
   filtreNomsPropis,
   filtreQuantitatLletres,
-} from './filtres';
-import { Entrada } from './types';
+} from "./filtres";
+import { Entrada } from "../types";
 
 export const getEntrades = (diccionari: string): Entrada[] => {
-  const lineas = diccionari.split('\n');
+  const lineas = diccionari.split("\n");
 
   const llistaEntrada = lineas
-    .map((entrada) => entrada.split(' '))
+    .map((entrada) => entrada.split(" "))
     .filter((entrada) => entrada.length === 3);
 
   const entradaObjecte = llistaEntrada.map(([derivada, origen, definicio]) => ({

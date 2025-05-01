@@ -2,7 +2,7 @@ name: Fetch diccionari
 
 on:
   schedule:
-    - cron: '0 0 */14 * *' # Adjusted to run every two weeks
+    - cron: "0 0 */14 * *" # Adjusted to run every two weeks
   workflow_dispatch:
 
 permissions:

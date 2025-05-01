@@ -1,3 +1,5 @@
+[![CI](https://github.com/MarcLlobet/millor-primera-paraula-wordle/actions/workflows/ci.yml/badge.svg)](https://github.com/MarcLlobet/millor-primera-paraula-wordle/actions/workflows/ci.yml)
+
 # millor-primera-paraula-wordle
 
 Calculador de millor primera paraula pel wordle.

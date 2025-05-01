@@ -1,12 +1,12 @@
-import fs from 'fs';
-import { QUANTITAT_LLETRES } from './src/getQuantitatLletres';
-import { getEntrades, getEntradesPerParaula } from './src/getEntrades';
-import { ABECEDARI } from './src/constants';
-import { filtradorItems, filtreCaractersUnics } from './src/filtres';
+import fs from "fs";
+import { QUANTITAT_LLETRES } from "./getQuantitatLletres";
+import { getEntrades, getEntradesPerParaula } from "./getEntrades";
+import { ABECEDARI } from "./constants";
+import { filtradorItems, filtreCaractersUnics } from "./filtres";
 
-const diccionari: string = fs.readFileSync('./diccionari/index.txt', 'utf-8');
+const diccionari: string = fs.readFileSync("./diccionari/index.txt", "utf-8");
 
-console.time('performance');
+console.time("performance");
 
 console.log({ QUANTITAT_LLETRES });
 
@@ -24,7 +24,7 @@ const getQuantitatIPosicions = (): QuantitatIPosicio[] =>
     .fill(null)
     .map((_, posicio) => ({ quantitat: 0, posicio }));
 
-const lletresAbecedari = ABECEDARI.split('');
+const lletresAbecedari = ABECEDARI.split("");
 
 type Lletra = {
   lletra: string;
@@ -52,7 +52,7 @@ const recomptePerLletra = lletresAbecedari.reduce(
 );
 
 totesLesParaules.forEach((paraula) =>
-  paraula.split('').forEach((lletra, index) => {
+  paraula.split("").forEach((lletra, index) => {
     const lletraDiccionari = recomptePerLletra[lletra];
     lletraDiccionari.quantitatIPosicions[index].quantitat++;
     lletraDiccionari.total++;
@@ -215,8 +215,8 @@ const millorParaula = millorLletres.lletres.reduce(
   [] as string[],
 );
 
-const millorEntrada = entradesPerParaula[millorParaula.join('')];
+export const millorEntrada = entradesPerParaula[millorParaula.join("")];
 
 console.log({ millorEntrada });
 
-console.timeEnd('performance');
+console.timeEnd("performance");

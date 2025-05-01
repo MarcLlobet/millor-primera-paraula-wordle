@@ -1,8 +1,8 @@
-import { ABECEDARI } from './constants';
-import { QUANTITAT_LLETRES } from './getQuantitatLletres';
-import { Entrada } from './types';
+import { ABECEDARI } from "./constants";
+import { QUANTITAT_LLETRES } from "./getQuantitatLletres";
+import { Entrada } from "../types";
 
-const MARCA_C_TRENCADA = 'MARCA_C_TRENCADA';
+const MARCA_C_TRENCADA = "MARCA_C_TRENCADA";
 
 const manipulaParaula = (
   paraula: string,
@@ -17,11 +17,11 @@ const manipulaReferenciaLaCTrencada = (paraula: string): string =>
   paraula.replace(/ç/g, MARCA_C_TRENCADA);
 
 const manipulaParaulesNormalitzades = (paraula: string): string =>
-  paraula.normalize('NFD');
+  paraula.normalize("NFD");
 const manipulaParaulaSenseTitlles = (paraula: string): string =>
-  paraula.replace(/[\u0300-\u036f]/g, '');
+  paraula.replace(/[\u0300-\u036f]/g, "");
 const manipulaRecuperarLaCTrencada = (paraula: string): string =>
-  paraula.replace(new RegExp(MARCA_C_TRENCADA, 'g'), 'ç');
+  paraula.replace(new RegExp(MARCA_C_TRENCADA, "g"), "ç");
 
 export const filtreCaractersValids = (paraula: string): string =>
   manipulaParaula(paraula, [
@@ -49,7 +49,7 @@ export const filtreNomsPropis = ({ origen }: Entrada): boolean =>
 export const filtreCaractersAbecedari = ({ origen }: Entrada): boolean => {
   const paraulaAmbCaractersValids = filtreCaractersValids(origen);
   return paraulaAmbCaractersValids
-    .split('')
+    .split("")
     .every((lletra) => ABECEDARI.includes(lletra));
 };
 

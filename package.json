@@ -1,27 +1,43 @@
 {
   "name": "millor-primera-paraula-wordle",
   "version": "1.0.0",
-  "description": "Calculador de millor primera paraula pel wordle.",
+  "type": "module",
   "scripts": {
-    "start": "ts-node index.ts $NUM_LLETRES",
-    "prettier": "prettier --write .",
-    "eslint": "eslint . --ext .ts",
-    "check-js-files": "yarn ts-node scripts/check-js-files.ts"
+    "dev": "vite",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "wordle": "ts-node index.ts $NUM_LLETRES",
+    "check-js-files": "ts-node scripts/check-js-files.ts",
+    "prepare": "husky"
   },
-  "license": "ISC",
+  "dependencies": {
+    "lint-staged": "^15.5.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
   "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/express": "^5.0.1",
     "@types/glob": "^8.1.0",
-    "@types/jest": "^29.0.0",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.15.3",
-    "@typescript-eslint/eslint-plugin": "^8.31.1",
-    "@typescript-eslint/parser": "^8.31.1",
-    "eslint": "^8.0.0",
-    "eslint-config-prettier": "^10.1.2",
-    "fs": "^0.0.1-security",
-    "jest": "^29.0.0",
-    "prettier": "^3.0.0",
-    "ts-jest": "^29.0.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.22.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "express": "^5.1.0",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-transform-stub": "^2.0.0",
+    "prettier": "^3.5.3",
+    "ts-jest": "^29.3.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.3.1"
   }
 }
