@@ -37,31 +37,25 @@ jobs:
                   fi
 
             - name: Download diccionary 📥
-              if: steps.compare.outputs.HASH_CHANGED == 'true'
               run: |
                   curl -o diccionari/index.txt https://raw.githubusercontent.com/Softcatala/catalan-dict-tools/refs/heads/master/resultats/lt/diccionari.txt
 
             - name: Update hash
-              if: steps.compare.outputs.HASH_CHANGED == 'true'
               run: cp diccionari/remote-hash.txt diccionari/local-hash.txt
 
             - name: Copy diccionari to dist 📦
-              if: steps.compare.outputs.HASH_CHANGED == 'true'
               run: |
                   mkdir -p dist/diccionari
                   cp -r diccionari/* dist/diccionari/
 
             - name: Setup Pages
-              if: steps.compare.outputs.HASH_CHANGED == 'true'
               uses: actions/configure-pages@v5
 
             - name: Save artifact 💾
-              if: steps.compare.outputs.HASH_CHANGED == 'true'
               uses: actions/upload-pages-artifact@v3
               with:
                   path: ./dist
 
             - name: Deploy to GitHub Pages
-              if: steps.compare.outputs.HASH_CHANGED == 'true'
               id: deploy-diccionari
               uses: actions/deploy-pages@v4
