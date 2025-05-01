@@ -55,7 +55,7 @@ jobs:
 
       - name: Save artifact 💾
         if: steps.compare.outputs.HASH_CHANGED == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v3
         with:
           path: diccionari
 
