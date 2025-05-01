@@ -1,4 +1,6 @@
 diccionari/index.txt
+diccionari/local-hash.txt
+diccionari/remote-hash.txt
 
 .DS_Store
 

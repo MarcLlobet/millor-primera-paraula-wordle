@@ -66,13 +66,18 @@ jobs:
       - name: Run coverage 🧪
         run: yarn jest --coverage
 
+      - name: Copy coverage to dist 📦
+        run: |
+          mkdir -p dist/coverage
+          cp -r coverage/* dist/coverage/
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload static files as artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: coverage/
+          path: ./dist
 
       - name: Deploy to GitHub Pages
         id: deployment
