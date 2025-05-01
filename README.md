@@ -26,9 +26,9 @@ L'Script pren el diccionari que li coloquis amb un format LanguageTool, el llege
 1. Prenem la següent lletra no utilitzada
 2. prenem la següent posicio no utilitzada
 3. busquem una paraula amb aquesta lletra
-   - Si existeix, guardem la lletra i la posicio com a utilitzades
-   - Si no existeix, tornem al pas 2, fins que comprovem totes les posicions
-   - Si no existeix cap paraula, en cap posicio, amb la lletra, tornem al pas 1
+    - Si existeix, guardem la lletra i la posicio com a utilitzades
+    - Si no existeix, tornem al pas 2, fins que comprovem totes les posicions
+    - Si no existeix cap paraula, en cap posicio, amb la lletra, tornem al pas 1
 
 ## Ús
 

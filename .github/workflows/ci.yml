@@ -1,84 +1,84 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+    workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+    contents: read
+    pages: write
+    id-token: write
 
 jobs:
-  ci:
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    ci:
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
 
-    steps:
-      - name: Checkout repository 🛠️
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout repository 🛠️
+              uses: actions/checkout@v3
 
-      - name: Setup Node.js 🖥️
-        uses: actions/setup-node@v3
-        with:
-          node-version: "node"
+            - name: Setup Node.js 🖥️
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'node'
 
-      - name: Install Yarn 📦
-        run: npm install --global yarn
+            - name: Install Yarn 📦
+              run: npm install --global yarn
 
-      - name: Cache Yarn dependencies 📦
-        uses: actions/cache@v3
-        id: cache
-        with:
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-          path: |
-            ~/.cache/yarn
-            ~/.yarn-cache
-            node_modules
-            .tsbuildinfo
+            - name: Cache Yarn dependencies 📦
+              uses: actions/cache@v3
+              id: cache
+              with:
+                  key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+                  path: |
+                      ~/.cache/yarn
+                      ~/.yarn-cache
+                      node_modules
+                      .tsbuildinfo
 
-      - name: Install dependencies with Yarn 📥
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install
+            - name: Install dependencies with Yarn 📥
+              if: steps.cache.outputs.cache-hit != 'true'
+              run: yarn install
 
-      - name: Run Prettier 🖌️
-        run: yarn prettier --check .
+            - name: Run Prettier 🖌️
+              run: yarn prettier --check .
 
-      - name: Run ESLint 🔍
-        run: yarn eslint .
+            - name: Run ESLint 🔍
+              run: yarn eslint .
 
-      - name: TypeScript check ✅
-        run: yarn tsc --noEmit
+            - name: TypeScript check ✅
+              run: yarn tsc --noEmit
 
-      - name: Check js files 🔍
-        run: yarn check-js-files
+            - name: Check js files 🔍
+              run: yarn check-js-files
 
-      - name: Run tests 🧪
-        run: yarn jest
+            - name: Run tests 🧪
+              run: yarn test
 
-      - name: Run coverage 🧪
-        run: yarn jest --coverage
+            - name: Run coverage 🧪
+              run: yarn coverage
 
-      - name: Copy coverage to dist 📦
-        run: |
-          mkdir -p dist/coverage
-          cp -r coverage/* dist/coverage/
+            - name: Copy coverage to dist 📦
+              run: |
+                  mkdir -p dist/coverage
+                  cp -r coverage/* dist/coverage/
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+            - name: Setup Pages
+              uses: actions/configure-pages@v5
 
-      - name: Upload static files as artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
+            - name: Upload static files as artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: ./dist
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4

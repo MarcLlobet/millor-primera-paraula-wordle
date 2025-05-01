@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 diccionari/index.txt
+
+coverage

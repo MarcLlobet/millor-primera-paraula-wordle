@@ -1,34 +1,36 @@
-import { glob } from "glob";
+import { globSync } from 'glob'
 
 export const TEXT = {
-  SEARCH_ERROR: "❌ Error while searching for JavaScript files: ",
-  FILES_FOUND: "❌ Please, move the following .js files to Typescript:",
-  SUCCESS: "✅ OK: No JavaScript files found.",
-} as const;
+    SEARCH_ERROR: '❌ Error while searching for JavaScript files: ',
+    FILES_FOUND: '❌ Please, move the following .js files to Typescript:',
+    SUCCESS: '✅ OK: No JavaScript files found.',
+} as const
 
-export const searchCallback = (error: Error | null, files: string[]) => {
-  if (error) {
-    console.error(TEXT.SEARCH_ERROR, error);
-    process.exit(1);
-  }
+export const getFiles = () => {
+    const files = globSync('**/*.js', {
+        ignore: ['node_modules/**', 'coverage/**', 'dist/**'],
+        nodir: true,
+    })
+    return files
+}
 
-  if (files.length) {
-    console.error(TEXT.FILES_FOUND);
-    console.group();
-    files.forEach((file: string) => console.error(`- ${file}`));
-    console.groupEnd();
-    process.exit(1);
-  }
+export const checkJsFiles = () => {
+    try {
+        const files = getFiles()
 
-  console.log(TEXT.SUCCESS);
-};
+        if (files?.length) {
+            console.error(TEXT.FILES_FOUND)
+            console.group()
+            files.forEach((file: string) => console.error(`- ${file}`))
+            console.groupEnd()
+            process.exit(1)
+        }
 
-export const checkJsFiles = (): void => {
-  glob(
-    "**/*.js",
-    { ignore: ["node_modules/**", "coverage/**"] },
-    searchCallback,
-  );
-};
+        console.log(TEXT.SUCCESS)
+    } catch (error) {
+        console.error(TEXT.SEARCH_ERROR, error)
+        process.exit(1)
+    }
+}
 
-export default checkJsFiles();
+export default checkJsFiles()

@@ -1,1 +1,4 @@
-yarn jest --no-cache
+yarn prettier . --write
+yarn eslint --fix .
+yarn check-js-files
+yarn test

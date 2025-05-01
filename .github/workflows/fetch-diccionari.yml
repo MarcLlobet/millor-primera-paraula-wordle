@@ -1,67 +1,67 @@
 name: Fetch diccionari
 
 on:
-  schedule:
-    - cron: "0 0 */14 * *" # Adjusted to run every two weeks
-  workflow_dispatch:
+    schedule:
+        - cron: '0 0 */14 * *' # Adjusted to run every two weeks
+    workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+    contents: read
+    pages: write
+    id-token: write
 
 jobs:
-  fetch-diccionari:
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy-diccionari.outputs.page_url }}
+    fetch-diccionari:
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+            url: ${{ steps.deploy-diccionari.outputs.page_url }}
 
-    steps:
-      - name: Checkout this repository 🛠️
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout this repository 🛠️
+              uses: actions/checkout@v3
 
-      - name: Get remot diccionari hash
-        run: |
-          echo $(git ls-remote https://github.com/Softcatala/catalan-dict-tools HEAD) > diccionari/remote-hash.txt
+            - name: Get remot diccionari hash
+              run: |
+                  echo $(git ls-remote https://github.com/Softcatala/catalan-dict-tools HEAD) > diccionari/remote-hash.txt
 
-      - name: Compare hashes 🔄
-        id: compare
-        run: |
-          if cmp -s diccionari/remote-hash.txt diccionari/local-hash.txt; then
-            echo "Same hashes"
-            echo "HASH_CHANGED='false'" >> $GITHUB_OUTPUT
-          else
-            echo "Different hashes"
-            echo "HASH_CHANGED='true'" >> $GITHUB_OUTPUT
-          fi
+            - name: Compare hashes 🔄
+              id: compare
+              run: |
+                  if cmp -s diccionari/remote-hash.txt diccionari/local-hash.txt; then
+                    echo "Same hashes"
+                    echo "HASH_CHANGED='false'" >> $GITHUB_OUTPUT
+                  else
+                    echo "Different hashes"
+                    echo "HASH_CHANGED='true'" >> $GITHUB_OUTPUT
+                  fi
 
-      - name: Download diccionary 📥
-        if: steps.compare.outputs.HASH_CHANGED == 'true'
-        run: |
-          curl -o diccionari/index.txt https://raw.githubusercontent.com/Softcatala/catalan-dict-tools/refs/heads/master/resultats/lt/diccionari.txt
+            - name: Download diccionary 📥
+              if: steps.compare.outputs.HASH_CHANGED == 'true'
+              run: |
+                  curl -o diccionari/index.txt https://raw.githubusercontent.com/Softcatala/catalan-dict-tools/refs/heads/master/resultats/lt/diccionari.txt
 
-      - name: Update hash
-        if: steps.compare.outputs.HASH_CHANGED == 'true'
-        run: cp diccionari/remote-hash.txt diccionari/local-hash.txt
+            - name: Update hash
+              if: steps.compare.outputs.HASH_CHANGED == 'true'
+              run: cp diccionari/remote-hash.txt diccionari/local-hash.txt
 
-      - name: Copy diccionari to dist 📦
-        if: steps.compare.outputs.HASH_CHANGED == 'true'
-        run: |
-          mkdir -p dist/diccionari
-          cp -r diccionari/* dist/diccionari/
+            - name: Copy diccionari to dist 📦
+              if: steps.compare.outputs.HASH_CHANGED == 'true'
+              run: |
+                  mkdir -p dist/diccionari
+                  cp -r diccionari/* dist/diccionari/
 
-      - name: Setup Pages
-        if: steps.compare.outputs.HASH_CHANGED == 'true'
-        uses: actions/configure-pages@v5
+            - name: Setup Pages
+              if: steps.compare.outputs.HASH_CHANGED == 'true'
+              uses: actions/configure-pages@v5
 
-      - name: Save artifact 💾
-        if: steps.compare.outputs.HASH_CHANGED == 'true'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
+            - name: Save artifact 💾
+              if: steps.compare.outputs.HASH_CHANGED == 'true'
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: ./dist
 
-      - name: Deploy to GitHub Pages
-        if: steps.compare.outputs.HASH_CHANGED == 'true'
-        id: deploy-diccionari
-        uses: actions/deploy-pages@v4
+            - name: Deploy to GitHub Pages
+              if: steps.compare.outputs.HASH_CHANGED == 'true'
+              id: deploy-diccionari
+              uses: actions/deploy-pages@v4
