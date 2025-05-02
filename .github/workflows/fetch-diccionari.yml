@@ -13,9 +13,6 @@ permissions:
 jobs:
     fetch-diccionari:
         runs-on: ubuntu-latest
-        environment:
-            name: deploy-diccionari
-            url: ${{ steps.deploy-diccionari.outputs.page_url }}
 
         steps:
             - name: Checkout this repository 🛠️
@@ -45,24 +42,10 @@ jobs:
               if: steps.compare.outputs.HASH_CHANGED == 'true'
               run: cp diccionari/remote-hash.txt diccionari/local-hash.txt
 
-            - name: Copy diccionari to dist 📦
-              if: steps.compare.outputs.HASH_CHANGED == 'true'
-              run: |
-                  mkdir -p dist/diccionari
-                  cp -r diccionari/* dist/diccionari/
-
-            - name: Setup Pages
-              if: steps.compare.outputs.HASH_CHANGED == 'true'
-              uses: actions/configure-pages@v5
-
             - name: Save artifact 💾
               if: steps.compare.outputs.HASH_CHANGED == 'true'
               uses: actions/upload-pages-artifact@v3
               with:
-                  name: deploy-diccionari
-                  path: ./dist
+                  id: deploy-diccionari
+                  path: ./diccionari
 
-            - name: Deploy to GitHub Pages
-              if: steps.compare.outputs.HASH_CHANGED == 'true'
-              id: deploy-diccionari
-              uses: actions/deploy-pages@v4
