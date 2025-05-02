@@ -59,6 +59,7 @@ jobs:
               if: steps.compare.outputs.HASH_CHANGED == 'true'
               uses: actions/upload-pages-artifact@v3
               with:
+                  name: deploy-diccionari
                   path: ./dist
 
             - name: Deploy to GitHub Pages

@@ -52,7 +52,7 @@ jobs:
         runs-on: ubuntu-latest
         environment:
             name: deploy-coverage
-            url: ${{ steps.deployment.outputs.page_url }}
+            url: ${{ steps.deploy-coverage.outputs.page_url }}
 
         steps:
             - name: Checkout repository 🛠️
@@ -75,10 +75,11 @@ jobs:
             - name: Upload static files as artifact 📤
               uses: actions/upload-pages-artifact@v3
               with:
+                  name: deploy-coverage
                   path: ./dist
 
             - name: Deploy to GitHub Pages 🚀
-              id: deployment
+              id: deploy-coverage
               uses: actions/deploy-pages@v4
 
     app:
@@ -103,6 +104,7 @@ jobs:
             - name: Upload static files as artifact 📦
               uses: actions/upload-pages-artifact@v3
               with:
+                  name: deploy-app
                   path: ./dist
 
             - name: Deploy to GitHub Pages 🛰️
