@@ -80,10 +80,10 @@ jobs:
             - name: Run build 🏗️
               run: yarn build
 
-            - name: Copy coverage to public 🗃️
+            - name: Copy coverage to dist 🗃️
               run: |
-                  mkdir -p public/coverage
-                  cp -r coverage/* public/coverage/
+                  mkdir -p dist/coverage
+                  cp -r coverage/* dist/coverage/
               shell: bash
 
             - name: Setup Pages 🌎
