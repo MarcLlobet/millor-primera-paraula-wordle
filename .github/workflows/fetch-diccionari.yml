@@ -43,5 +43,5 @@ jobs:
             - name: Save artifact 💾
               uses: actions/upload-pages-artifact@v3
               with:
-                  id: deploy-diccionari
+                  name: deploy-diccionari
                   path: ./diccionari
