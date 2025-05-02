@@ -1,0 +1,31 @@
+name: 'Setup action'
+runs:
+    using: 'composite'
+
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout repository 🛠️
+          uses: actions/checkout@v4
+
+        - name: Setup Node.js 🌐
+          uses: actions/setup-node@v3
+          with:
+              node-version: 'node'
+
+        - name: Install Yarn 📦
+          run: npm install --global yarn
+
+        - name: Cache Yarn dependencies 🗂️
+          uses: actions/cache@v3
+          id: cache
+          with:
+              key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+              path: |
+                  ~/.cache/yarn
+                  ~/.yarn-cache
+                  node_modules
+                  .tsbuildinfo
+
+        - name: Install dependencies with Yarn 📥
+          if: steps.cache.outputs.cache-hit != 'true'
+          run: yarn install
