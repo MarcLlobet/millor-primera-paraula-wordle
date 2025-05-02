@@ -6,6 +6,7 @@
         "test": "vitest",
         "coverage": "vitest run --coverage",
         "dev": "vite",
+        "build": "vite build",
         "lint": "eslint .",
         "preview": "vite preview",
         "wordle": "tsx src/logic/index.ts $NUM_LLETRES",
