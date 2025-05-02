@@ -14,7 +14,7 @@ jobs:
     fetch-diccionari:
         runs-on: ubuntu-latest
         environment:
-            name: github-pages
+            name: deploy-diccionari
             url: ${{ steps.deploy-diccionari.outputs.page_url }}
 
         steps:
