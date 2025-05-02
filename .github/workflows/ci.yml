@@ -18,6 +18,9 @@ jobs:
     lint:
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout repository 🛠️
+              uses: actions/checkout@v4
+              
             - name: Setup 🛠️
               uses: ./.github/actions/setup
 
@@ -36,6 +39,9 @@ jobs:
     test:
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout repository 🛠️
+              uses: actions/checkout@v4
+              
             - name: Setup 🛠️
               uses: ./.github/actions/setup
 
@@ -49,6 +55,9 @@ jobs:
             url: ${{ steps.deployment.outputs.page_url }}
 
         steps:
+            - name: Checkout repository 🛠️
+              uses: actions/checkout@v4
+              
             - name: Setup 🛠️
               uses: ./.github/actions/setup
 
@@ -79,6 +88,9 @@ jobs:
             url: ${{ steps.deployment.outputs.page_url }}
 
         steps:
+            - name: Checkout repository 🛠️
+              uses: actions/checkout@v4
+
             - name: Setup 🛠️
               uses: ./.github/actions/setup
 
