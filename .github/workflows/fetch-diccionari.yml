@@ -24,6 +24,7 @@ jobs:
 
             - name: Compare hashes 🔄
               id: compare
+              shell: bash
               run: |
                   if cmp -s diccionari/remote-hash.txt diccionari/local-hash.txt; then
                     echo "Same hashes"
@@ -34,14 +35,16 @@ jobs:
                   fi
 
             - name: Download diccionary 📥
+              shell: bash
               run: |
                   curl -o diccionari/index.txt https://raw.githubusercontent.com/Softcatala/catalan-dict-tools/refs/heads/master/resultats/lt/diccionari.txt
 
             - name: Update hash
+              shell: bash
               run: cp diccionari/remote-hash.txt diccionari/local-hash.txt
 
             - name: Save artifact 💾
-              uses: actions/upload-pages-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: deploy-diccionari
                   path: ./diccionari
