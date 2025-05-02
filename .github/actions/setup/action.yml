@@ -10,14 +10,10 @@ runs:
           uses: actions/setup-node@v3
           with:
               node-version: 'node'
-
-        - name: Install Yarn 📦
-          run: npm install --global yarn
-          shell: bash
+              cache: 'yarn'
 
         - name: Cache Yarn dependencies 🗂️
           uses: actions/cache@v3
-          id: cache
           with:
               key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
               path: |
@@ -27,6 +23,5 @@ runs:
                   .tsbuildinfo
 
         - name: Install dependencies with Yarn 📥
-          if: steps.cache.outputs.cache-hit != 'true'
           run: yarn install
           shell: bash

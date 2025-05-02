@@ -23,6 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-diccionari/index.txt
+diccionari/
+!diccionari/index.html
+!diccionari/index.example.txt
 
 coverage
