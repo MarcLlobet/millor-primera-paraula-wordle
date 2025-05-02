@@ -75,7 +75,7 @@ jobs:
               uses: ./.github/actions/setup
 
             - name: Coverage 🏗️
-              run: yarn build
+              run: yarn coverage
 
             - name: Run build 🏗️
               run: yarn build
