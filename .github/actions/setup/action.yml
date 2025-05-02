@@ -1,7 +1,6 @@
 name: 'Setup action'
 runs:
     using: 'composite'
-    shell: bash
 
     steps:
         - name: Checkout repository 🛠️
@@ -14,6 +13,7 @@ runs:
 
         - name: Install Yarn 📦
           run: npm install --global yarn
+          shell: bash
 
         - name: Cache Yarn dependencies 🗂️
           uses: actions/cache@v3
@@ -29,3 +29,4 @@ runs:
         - name: Install dependencies with Yarn 📥
           if: steps.cache.outputs.cache-hit != 'true'
           run: yarn install
+          shell: bash
