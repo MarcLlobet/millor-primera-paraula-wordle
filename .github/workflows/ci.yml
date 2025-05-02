@@ -48,12 +48,8 @@ jobs:
             - name: Run tests 🧪
               run: yarn test
 
-    coverage:
+    build:
         runs-on: ubuntu-latest
-        environment:
-            name: deploy-coverage
-            url: ${{ steps.deploy-coverage.outputs.page_url }}
-
         steps:
             - name: Checkout repository 🛠️
               uses: actions/checkout@v4
@@ -61,28 +57,11 @@ jobs:
             - name: Setup 🛠️
               uses: ./.github/actions/setup
 
-            - name: Run coverage 📊
-              run: yarn coverage
+            - name: Run build 🏗️
+              run: yarn build
 
-            - name: Copy coverage to dist 🗃️
-              run: |
-                  mkdir -p dist/coverage
-                  cp -r coverage/* dist/coverage/
-
-            - name: Setup Pages 🌍
-              uses: actions/configure-pages@v5
-
-            - name: Upload static files as artifact 📤
-              uses: actions/upload-pages-artifact@v3
-              with:
-                  name: deploy-coverage
-                  path: ./dist
-
-            - name: Deploy to GitHub Pages 🚀
-              id: deploy-coverage
-              uses: actions/deploy-pages@v4
-
-    app:
+    deploy:
+        needs: [lint, test, build]
         runs-on: ubuntu-latest
         environment:
             name: deploy-app
@@ -95,8 +74,17 @@ jobs:
             - name: Setup 🛠️
               uses: ./.github/actions/setup
 
+            - name: Coverage 🏗️
+              run: yarn build
+
             - name: Run build 🏗️
               run: yarn build
+
+            - name: Copy coverage to public 🗃️
+              run: |
+                  mkdir -p public/coverage
+                  cp -r coverage/* public/coverage/
+              shell: bash
 
             - name: Setup Pages 🌎
               uses: actions/configure-pages@v5
