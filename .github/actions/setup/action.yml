@@ -1,8 +1,8 @@
 name: 'Setup action'
 runs:
     using: 'composite'
+    shell: bash
 
-    runs-on: ubuntu-latest
     steps:
         - name: Checkout repository 🛠️
           uses: actions/checkout@v4
