@@ -19,8 +19,7 @@ jobs:
                   node-version: '20'
 
             - name: Build project 🏗️
-              working-directory: src/server
-              run: yarn build
+              run: yarn build:server
 
             - name: Deploy to Heroku 🚀
               env:
@@ -35,4 +34,4 @@ jobs:
                   echo "  password $HEROKU_API_KEY" >> ~/.netrc
                   yarn global add heroku
                   heroku git:remote -a $HEROKU_APP_NAME
-                  git push heroku `git subtree split --prefix src/server main`:main --force
+                  git push heroku $(git subtree split --prefix dist-server main):refs/heads/main --force

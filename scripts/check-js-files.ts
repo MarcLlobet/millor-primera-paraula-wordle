@@ -8,7 +8,7 @@ export const TEXT = {
 
 export const getFiles = () => {
     const files = globSync('**/*.js', {
-        ignore: ['node_modules/**', 'coverage/**', 'dist/**'],
+        ignore: ['node_modules/**', 'coverage/**', 'dist/**', 'dist-server/**'],
         nodir: true,
     })
     return files
