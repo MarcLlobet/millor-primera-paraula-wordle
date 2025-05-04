@@ -1,0 +1,30 @@
+name: Deploy to Heroku
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository 🛠️
+              uses: actions/checkout@v4
+
+            - name: Setup 🛠️
+              uses: ./.github/actions/setup
+
+            - name: Build project 🏗️
+              working-directory: src/server
+              run: yarn build
+
+            - name: Deploy to Heroku 🚀
+              env:
+                  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+                  HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+              run: |
+                  yarn global add heroku
+                  heroku git:remote -a $HEROKU_APP_NAME
+                  git push heroku `git subtree split --prefix src/server main`:main --force
