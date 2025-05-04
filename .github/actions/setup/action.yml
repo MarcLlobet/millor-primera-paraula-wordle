@@ -1,4 +1,9 @@
 name: 'Setup action'
+inputs:
+    node-version:
+        description: 'Node.js version to use'
+        default: 'node'
+
 runs:
     using: 'composite'
 
@@ -9,7 +14,7 @@ runs:
         - name: Setup Node.js 🌐
           uses: actions/setup-node@v3
           with:
-              node-version: 'node'
+              node-version: ${{ inputs.node-version }}
               cache: 'yarn'
 
         - name: Cache Yarn dependencies 🗂️
