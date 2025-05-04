@@ -27,6 +27,12 @@ jobs:
                   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
                   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
               run: |
+                  echo "machine api.heroku.com" > ~/.netrc
+                  echo "  login $HEROKU_API_KEY" >> ~/.netrc
+                  echo "  password $HEROKU_API_KEY" >> ~/.netrc
+                  echo "machine git.heroku.com" >> ~/.netrc
+                  echo "  login $HEROKU_API_KEY" >> ~/.netrc
+                  echo "  password $HEROKU_API_KEY" >> ~/.netrc
                   yarn global add heroku
                   heroku git:remote -a $HEROKU_APP_NAME
                   git push heroku `git subtree split --prefix src/server main`:main --force
