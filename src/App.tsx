@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 const getGreeting = async function () {
-    const res = await fetch('https://wordle-app-33d0a5d98822.herokuapp.com/api', {
-        method: "GET",
-        mode: "no-cors",
-      })
+    const res = await fetch(
+        'https://wordle-app-33d0a5d98822.herokuapp.com/api',
+        {
+            method: 'GET',
+            mode: 'no-cors',
+        }
+    )
     return await res.json()
 }
 
