@@ -13,7 +13,8 @@
         "check-js-files": "tsx scripts/check-js-files.ts",
         "postinstall": "husky",
         "dev:server": "nodemon --watch server --ext ts --exec tsx server/index.ts",
-        "build:server": "tsc --project tsconfig.server.json"
+        "build:server": "tsc --project tsconfig.server.json",
+        "start:server": "node dist-server/index.js"
     },
     "dependencies": {
         "react": "^19.0.0",
