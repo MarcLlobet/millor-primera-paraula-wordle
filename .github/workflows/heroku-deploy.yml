@@ -51,13 +51,18 @@ jobs:
                   cp -r diccionari/* dist-server/diccionari/
               shell: bash
 
-            - name: Verify repository state 🛠️
+            - name: Check change 🛠️
+              id: check-change
               run: |
-                  git status
-                  git log -1
+                  if git diff --quiet dist-server; then
+                      echo "has-changed=false" >> $GITHUB_OUTPUT
+                  else
+                      echo "has-changed=true" >> $GITHUB_OUTPUT
+                  fi
               shell: bash
 
             - name: Deploy to Heroku 🚀
+              if: steps.check-change.outputs.has-changed == 'true'
               env:
                   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
                   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
