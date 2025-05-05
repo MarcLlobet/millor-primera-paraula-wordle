@@ -1,0 +1,48 @@
+name: Deploy to Render
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository 🛠️
+              uses: actions/checkout@v4
+
+            - name: Setup 🛠️
+              uses: ./.github/actions/setup
+              with:
+                  node-version: '20'
+
+            - name: Get remot diccionari etag
+              id: diccionari-etag
+              shell: bash
+              run: |
+                  echo "ETAG=$(curl --head --location https://github.com/Softcatala/catalan-dict-tools/raw/refs/heads/master/resultats/lt/diccionari.txt | grep -i etag)" >> $GITHUB_OUTPUT
+
+            - name: Cache diccionary dependencies
+              id: diccionari-cache
+              uses: actions/cache@v3
+              with:
+                  path: diccionari/.etag
+                  key: diccionari-${{steps.diccionari-etag.outputs.ETAG}}
+
+            - name: Download diccionary 📥
+              if: steps.diccionari-cache.outputs.cache-hit != 'true'
+              shell: bash
+              run: |
+                  curl -o diccionari/index.txt https://raw.githubusercontent.com/Softcatala/catalan-dict-tools/refs/heads/master/resultats/lt/diccionari.txt
+
+            - name: Build project 🏗️
+              run: yarn build:server
+
+            - name: Copy diccionari to dist 🗃️
+              run: |
+                  mkdir -p dist-server/diccionari
+                  cp -r diccionari/* dist-server/diccionari/
+              shell: bash
+
