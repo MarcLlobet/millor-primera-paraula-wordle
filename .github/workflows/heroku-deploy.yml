@@ -39,7 +39,7 @@ jobs:
 
             - name: Prevent heroku shallow error 🚫
               run: |
-                  git fetch --unshallow --tags
+                  git fetch --unshallow
               shell: bash
 
             - name: Build project 🏗️
@@ -50,6 +50,13 @@ jobs:
                   mkdir -p dist-server/diccionari
                   cp -r diccionari/* dist-server/diccionari/
               shell: bash
+
+            - name: Commit changes for Heroku
+              run: |
+                  git config user.name "GitHub Actions"
+                  git config user.email "actions@github.com"
+                  git add -f dist-server
+                  git commit -m "Prepare deployment to Heroku"
 
             - name: Deploy to Heroku 🚀
               env:
@@ -63,8 +70,6 @@ jobs:
                   echo "  login $HEROKU_API_KEY" >> ~/.netrc
                   echo "  password $HEROKU_API_KEY" >> ~/.netrc
                   chmod 600 ~/.netrc
-                  git add -f dist-server
-                  git branch -D deploy-branch || true
                   git subtree split --prefix dist-server -b deploy-branch
                   git push heroku deploy-branch:main --force
                   git branch -D deploy-branch
