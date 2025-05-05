@@ -21,6 +21,11 @@ jobs:
             - name: Build project 🏗️
               run: yarn build:server
 
+            - name: Prevent heroku shallow error 🚫
+              run: |
+                [[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow"
+              shell: bash
+
             - name: Deploy to Heroku 🚀
               env:
                   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
