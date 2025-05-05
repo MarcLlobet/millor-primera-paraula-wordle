@@ -54,7 +54,8 @@ jobs:
             - name: Check change 🛠️
               id: check-change
               run: |
-                  if git diff --quiet dist-server; then
+                  git add dist-server
+                  if git diff --cached --quiet; then
                       echo "has-changed=false" >> $GITHUB_OUTPUT
                   else
                       echo "has-changed=true" >> $GITHUB_OUTPUT
