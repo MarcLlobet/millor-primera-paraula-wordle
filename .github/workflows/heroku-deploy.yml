@@ -23,7 +23,7 @@ jobs:
 
             - name: Prevent heroku shallow error 🚫
               run: |
-                [[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow"
+                  [[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow
               shell: bash
 
             - name: Deploy to Heroku 🚀
