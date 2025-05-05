@@ -5,8 +5,7 @@ services:
   repo: https://github.com/MarcLlobet/millor-primera-paraula-wordle
   plan: free
   region: oregon
-  buildCommand: yarn --frozen-lockfile install; yarn build:server; git add -f dirst-server
+  buildCommand: yarn --frozen-lockfile install && yarn build:server
   startCommand: yarn start:server
   autoDeployTrigger: commit
-  rootDir: dist-server
 version: "1"
