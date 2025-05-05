@@ -8,5 +8,4 @@ services:
   buildCommand: yarn --frozen-lockfile install; yarn build:server
   startCommand: yarn start:server
   autoDeployTrigger: commit
-  rootDir: dist-server
 version: "1"
