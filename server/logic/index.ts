@@ -4,15 +4,8 @@ import { getEntrades, getEntradesPerParaula } from './getEntrades'
 import { ABECEDARI } from './constants'
 import { filtradorItems, filtreCaractersUnics } from './filtres'
 
-const diccionari: string = fs.readFileSync('diccionari/index.txt', 'utf-8')
-
+export const getMillorParaula = (paraules: string[], llargada: number ) => {
 console.time('performance')
-
-console.log({ QUANTITAT_LLETRES })
-
-const totesLesEntrades = getEntrades(diccionari)
-const entradesPerParaula = getEntradesPerParaula(totesLesEntrades)
-const totesLesParaules = Object.keys(entradesPerParaula)
 
 type QuantitatIPosicio = {
     quantitat: number
@@ -20,7 +13,7 @@ type QuantitatIPosicio = {
 }
 
 const getQuantitatIPosicions = (): QuantitatIPosicio[] =>
-    Array(QUANTITAT_LLETRES)
+    Array(llargada)
         .fill(null)
         .map((_, posicio) => ({ quantitat: 0, posicio }))
 
@@ -51,7 +44,7 @@ const recomptePerLletra = lletresAbecedari.reduce(
     {} as RecomptePerLletra
 )
 
-totesLesParaules.forEach((paraula) =>
+paraules.forEach((paraula) =>
     paraula.split('').forEach((lletra, index) => {
         const lletraDiccionari = recomptePerLletra[lletra]
         lletraDiccionari.quantitatIPosicions[index].quantitat++
@@ -59,7 +52,7 @@ totesLesParaules.forEach((paraula) =>
     })
 )
 
-const paraulesCaractersUnics = filtradorItems(totesLesParaules, [
+const paraulesCaractersUnics = filtradorItems(paraules, [
     filtreCaractersUnics,
 ])
 
@@ -215,9 +208,18 @@ const millorParaula = millorLletres.lletres.reduce(
     },
     [] as string[]
 )
-
-export const millorEntrada = entradesPerParaula[millorParaula.join('')]
-
-console.log({ millorEntrada })
-
 console.timeEnd('performance')
+return millorParaula
+}
+
+export const getMillorEntrada = () => {
+    const diccionari: string = fs.readFileSync('diccionari/index.txt', 'utf-8')
+    const totesLesEntrades = getEntrades(diccionari)
+    const entradesPerParaula = getEntradesPerParaula(totesLesEntrades)
+    const totesLesParaules = Object.keys(entradesPerParaula)
+    const millorParaula = getMillorParaula(totesLesParaules, QUANTITAT_LLETRES)
+
+    const millorEntrada = entradesPerParaula[millorParaula.join('')]
+
+    return millorEntrada
+}
