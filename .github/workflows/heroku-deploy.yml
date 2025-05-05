@@ -51,6 +51,14 @@ jobs:
                   cp -r diccionari/* dist-server/diccionari/
               shell: bash
 
+            - name: Setup Heroku CLI 🌐
+              run: |
+                  cd dist-server
+                  npm init -y
+                  npm pkg set scripts.start="node index.js"
+                  cd -
+              shell: bash
+
             - name: Commit changes for Heroku
               run: |
                   git config user.name "GitHub Actions"
