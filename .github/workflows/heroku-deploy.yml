@@ -37,6 +37,10 @@ jobs:
               run: |
                   curl -o diccionari/index.txt https://raw.githubusercontent.com/Softcatala/catalan-dict-tools/refs/heads/master/resultats/lt/diccionari.txt
 
+            - name: Prevent heroku shallow error 🚫
+              run: git fetch --unshallow
+              shell: bash
+
             - name: Build project 🏗️
               run: yarn build:server
 
@@ -58,6 +62,5 @@ jobs:
                   echo "  login $HEROKU_API_KEY" >> ~/.netrc
                   echo "  password $HEROKU_API_KEY" >> ~/.netrc
                   yarn global add heroku
-                  git fetch --unshallow
                   heroku git:remote -a $HEROKU_APP_NAME
                   git push heroku $(git subtree split --prefix dist-server main) --force-with-lease
