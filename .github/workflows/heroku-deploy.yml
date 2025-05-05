@@ -51,19 +51,7 @@ jobs:
                   cp -r diccionari/* dist-server/diccionari/
               shell: bash
 
-            - name: Check change 🛠️
-              id: check-change
-              run: |
-                  git add -f dist-server
-                  if git diff --cached --quiet; then
-                      echo "has-changed=false" >> $GITHUB_OUTPUT
-                  else
-                      echo "has-changed=true" >> $GITHUB_OUTPUT
-                  fi
-              shell: bash
-
             - name: Deploy to Heroku 🚀
-              if: steps.check-change.outputs.has-changed == 'true'
               env:
                   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
                   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
@@ -75,6 +63,7 @@ jobs:
                   echo "  login $HEROKU_API_KEY" >> ~/.netrc
                   echo "  password $HEROKU_API_KEY" >> ~/.netrc
                   chmod 600 ~/.netrc
+                  git add -f dist-server
                   git branch -D deploy-branch || true
                   git subtree split --prefix dist-server -b deploy-branch
                   git push heroku deploy-branch:main --force
