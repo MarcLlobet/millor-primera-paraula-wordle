@@ -12,6 +12,7 @@
         "wordle": "tsx server/logic/index.ts $NUM_LLETRES",
         "check-js-files": "tsx scripts/check-js-files.ts",
         "postinstall": "husky",
+        "dev:server": "nodemon --watch server --ext ts --exec tsx server/index.ts",
         "build:server": "tsc --project tsconfig.server.json"
     },
     "dependencies": {
@@ -35,7 +36,9 @@
         "glob": "^11.0.2",
         "husky": "^9.1.7",
         "jiti": "^2.4.2",
+        "nodemon": "^3.1.10",
         "prettier": "^3.5.3",
+        "ts-node": "^10.9.2",
         "tsx": "^4.19.4",
         "typescript": "~5.7.2",
         "typescript-eslint": "^8.26.1",

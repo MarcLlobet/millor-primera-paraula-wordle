@@ -4,7 +4,7 @@ import { getEntrades, getEntradesPerParaula } from './getEntrades'
 import { ABECEDARI } from './constants'
 import { filtradorItems, filtreCaractersUnics } from './filtres'
 
-const diccionari: string = fs.readFileSync('./diccionari/index.txt', 'utf-8')
+const diccionari: string = fs.readFileSync('diccionari/index.txt', 'utf-8')
 
 console.time('performance')
 
