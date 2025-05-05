@@ -59,6 +59,14 @@ jobs:
                   cd -
               shell: bash
 
+            - name: Add remote origin
+              env:
+                  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+                  HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+              run: |
+                git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+              shell: bash
+
             - name: Commit changes for Heroku
               run: |
                   git config user.name "GitHub Actions"
@@ -67,15 +75,7 @@ jobs:
                   git commit -nm "Prepare deployment to Heroku"
 
             - name: Deploy to Heroku 🚀
-              env:
-                  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-                  HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
               run: |
-                  echo "machine api.heroku.com" > ~/.netrc
-                  echo "  login $HEROKU_API_KEY" >> ~/.netrc
-                  echo "  password $HEROKU_API_KEY" >> ~/.netrc
-                  chmod 600 ~/.netrc
-                  git remote add heroku https://git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
                   git subtree split --prefix dist-server -b deploy-branch
                   git push heroku deploy-branch:main --force
                   git branch -D deploy-branch
