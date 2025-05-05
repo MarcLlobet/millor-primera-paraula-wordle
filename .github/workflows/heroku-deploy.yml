@@ -13,6 +13,11 @@ jobs:
             - name: Checkout repository 🛠️
               uses: actions/checkout@v4
 
+            - name: Prevent heroku shallow error 🚫
+              run: |
+                  [[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow
+              shell: bash
+
             - name: Setup 🛠️
               uses: ./.github/actions/setup
               with:
@@ -20,11 +25,6 @@ jobs:
 
             - name: Build project 🏗️
               run: yarn build:server
-
-            - name: Prevent heroku shallow error 🚫
-              run: |
-                  [[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow
-              shell: bash
 
             - name: Deploy to Heroku 🚀
               env:
