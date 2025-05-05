@@ -38,7 +38,8 @@ jobs:
                   curl -o diccionari/index.txt https://raw.githubusercontent.com/Softcatala/catalan-dict-tools/refs/heads/master/resultats/lt/diccionari.txt
 
             - name: Prevent heroku shallow error 🚫
-              run: git fetch --unshallow
+              run: |
+                  git fetch --unshallow --tags
               shell: bash
 
             - name: Build project 🏗️
