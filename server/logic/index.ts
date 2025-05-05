@@ -215,7 +215,7 @@ export const getMillorParaula = (paraules: string[], llargada: number) => {
 }
 
 export const getMillorEntrada = () => {
-    const diccionari: string = fs.readFileSync('diccionari/index.txt', 'utf-8')
+    const diccionari: string = fs.readFileSync('./diccionari/index.txt', 'utf-8')
     const totesLesEntrades = getEntrades(diccionari)
     const entradesPerParaula = getEntradesPerParaula(totesLesEntrades)
     const totesLesParaules = Object.keys(entradesPerParaula)
