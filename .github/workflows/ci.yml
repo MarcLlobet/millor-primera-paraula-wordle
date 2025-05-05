@@ -85,7 +85,7 @@ jobs:
                   mkdir -p dist/coverage
                   cp -r coverage/* dist/coverage/
               shell: bash
-            
+
             - name: Copy diccionari to dist 🗃️
               run: |
                   mkdir -p dist/diccionari
