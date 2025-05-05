@@ -64,7 +64,7 @@ jobs:
                   git config user.name "GitHub Actions"
                   git config user.email "actions@github.com"
                   git add -f dist-server
-                  git commit -m "Prepare deployment to Heroku"
+                  git commit -nm "Prepare deployment to Heroku"
 
             - name: Deploy to Heroku 🚀
               env:
@@ -72,9 +72,6 @@ jobs:
                   HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
               run: |
                   echo "machine api.heroku.com" > ~/.netrc
-                  echo "  login $HEROKU_API_KEY" >> ~/.netrc
-                  echo "  password $HEROKU_API_KEY" >> ~/.netrc
-                  echo "machine git.heroku.com" >> ~/.netrc
                   echo "  login $HEROKU_API_KEY" >> ~/.netrc
                   echo "  password $HEROKU_API_KEY" >> ~/.netrc
                   chmod 600 ~/.netrc
