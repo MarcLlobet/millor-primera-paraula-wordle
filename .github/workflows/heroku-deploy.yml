@@ -70,6 +70,7 @@ jobs:
                   echo "  login $HEROKU_API_KEY" >> ~/.netrc
                   echo "  password $HEROKU_API_KEY" >> ~/.netrc
                   chmod 600 ~/.netrc
+                  git remote add heroku https://git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
                   git subtree split --prefix dist-server -b deploy-branch
                   git push heroku deploy-branch:main --force
                   git branch -D deploy-branch
