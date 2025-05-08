@@ -1,5 +1,5 @@
 import {
-    filtradorItems,
+    filtradorEntrades,
     filtreCaractersAbecedari,
     filtreCaractersValids,
     filtreInfinitius,
@@ -29,7 +29,7 @@ export const getEntrades = (diccionari: string): Entrada[] => {
 export const getEntradesPerParaula = (
     paraules: Entrada[]
 ): Record<string, Entrada> => {
-    const entradesFiltrades = filtradorItems(paraules, [
+    const entradesFiltrades = filtradorEntrades(paraules, [
         filtreQuantitatLletres,
         filtreInfinitius,
         filtreNomsPropis,

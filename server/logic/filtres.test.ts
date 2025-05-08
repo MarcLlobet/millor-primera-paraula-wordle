@@ -1,7 +1,7 @@
 import { expect, describe, it } from 'vitest'
 import {
     filtreCaractersValids,
-    filtradorItems,
+    filtradorEntrades,
     filtreQuantitatLletres,
     filtreInfinitius,
     filtreNomsPropis,
@@ -20,11 +20,17 @@ describe('filtreCaractersValids', () => {
     })
 })
 
-describe('filtradorItems', () => {
+describe('filtradorEntrades', () => {
     it('hauria de filtrar elements segons els filtres proporcionats', () => {
-        const items = [1, 2, 3, 4]
-        const filtres = [(x: number) => x > 2, (x: number) => x % 2 === 0]
-        expect(filtradorItems(items, filtres)).toEqual([4])
+        const entrades = [
+            { derivada: '', origen: 'a' },
+            { derivada: '', origen: 'ab' },
+            { derivada: '', origen: 'abc' },
+        ]
+        const filtres = [(entrada: Entrada) => entrada.origen.length === 3]
+        expect(filtradorEntrades(entrades, filtres)).toEqual([
+            { derivada: '', origen: 'abc' },
+        ])
     })
 })
 

@@ -1,6 +1,6 @@
 import { QUANTITAT_LLETRES } from './getQuantitatLletres'
 import { ABECEDARI } from './constants'
-import { filtradorItems, filtreCaractersUnics } from './filtres'
+import { filtradorParaules, filtreCaractersUnics } from './filtres'
 
 type QuantitatIPosicio = {
     quantitat: number
@@ -223,7 +223,7 @@ export const getMillorParaula = (paraules: string[], llargada: number) => {
 
     const lletresOrdenades = getLletresOrdenades(paraules, llargada)
 
-    const paraulesCaractersUnics = filtradorItems(paraules, [
+    const paraulesCaractersUnics = filtradorParaules(paraules, [
         filtreCaractersUnics,
     ])
 

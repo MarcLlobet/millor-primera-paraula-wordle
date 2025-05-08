@@ -1,6 +1,6 @@
 import fs from 'fs'
 import {
-    filtradorItems,
+    filtradorEntrades,
     filtreCaractersAbecedari,
     filtreInfinitius,
     filtreNomsPropis,
@@ -17,7 +17,7 @@ const lineas = diccionari.split('\n')
 
 const llistaEntrada = lineas.map((entrada) => entrada.split(' '))
 
-const entradaObjecte = llistaEntrada.map(([derivada, origen]) => ({
+const entradaObjecte: Entrada[] = llistaEntrada.map(([derivada, origen]) => ({
     derivada,
     origen,
 }))
@@ -48,7 +48,7 @@ const getDosDecimals = (num: number) => Math.round(num * 100) / 100
 const numItemsTotal = entradaObjecte.length
 
 const recomptePerFiltre = filtres.map((filtre) => {
-    const itemsFiltrats = filtradorItems(entradaObjecte, [filtre])
+    const itemsFiltrats = filtradorEntrades(entradaObjecte, [filtre])
     const numItemsFiltrats = itemsFiltrats.length
     const percentatge = getDosDecimals((100 * numItemsFiltrats) / numItemsTotal)
 

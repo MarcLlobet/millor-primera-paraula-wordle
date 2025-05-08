@@ -31,18 +31,27 @@ export const filtreCaractersValids = (paraula: string): string =>
         manipulaRecuperarLaCTrencada,
     ])
 
-type Filtre = (entrada: Entrada) => boolean
+type FiltreParaulaCallback = (paraula: string) => boolean
 
-export const filtradorItems = (items: Entrada[], filtres: Filtre[]) =>
-    filtres.reduce((prevItems, filtre) => prevItems.filter(filtre), items)
+export const filtradorParaules = (
+    items: string[],
+    filtres: FiltreParaulaCallback[]
+) => filtres.reduce((prevItems, filtre) => prevItems.filter(filtre), items)
 
-export const filtreQuantitatLletres: Filtre = ({ origen }) =>
+type FiltreEntradaCallback = (entrada: Entrada) => boolean
+
+export const filtradorEntrades = (
+    items: Entrada[],
+    filtres: FiltreEntradaCallback[]
+) => filtres.reduce((prevItems, filtre) => prevItems.filter(filtre), items)
+
+export const filtreQuantitatLletres: FiltreEntradaCallback = ({ origen }) =>
     origen?.length === QUANTITAT_LLETRES
 
-export const filtreInfinitius: Filtre = ({ origen, derivada }) =>
+export const filtreInfinitius: FiltreEntradaCallback = ({ origen, derivada }) =>
     origen === derivada
 
-export const filtreNomsPropis: Filtre = ({ origen }) =>
+export const filtreNomsPropis: FiltreEntradaCallback = ({ origen }) =>
     origen?.toLowerCase() === origen
 
 export const filtreCaractersAbecedari = ({ origen }: Entrada): boolean => {
