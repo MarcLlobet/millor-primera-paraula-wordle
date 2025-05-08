@@ -31,22 +31,24 @@ export const filtreCaractersValids = (paraula: string): string =>
         manipulaRecuperarLaCTrencada,
     ])
 
-export const filtradorItems = <T>(
-    items: T[],
-    filtres: ((item: T) => boolean)[]
-): T[] => filtres.reduce((prevItems, filtre) => prevItems.filter(filtre), items)
+type Filtre = (entrada: Entrada) => boolean
 
-export const filtreQuantitatLletres = ({ origen }: Entrada): boolean =>
+export const filtradorItems = (items: Entrada[], filtres: Filtre[]) =>
+    filtres.reduce((prevItems, filtre) => prevItems.filter(filtre), items)
+
+export const filtreQuantitatLletres: Filtre = ({ origen }) =>
     origen?.length === QUANTITAT_LLETRES
 
-export const filtreInfinitius = ({ origen, derivada }: Entrada): boolean =>
+export const filtreInfinitius: Filtre = ({ origen, derivada }) =>
     origen === derivada
 
-export const filtreNomsPropis = ({ origen }: Entrada): boolean =>
-    origen.toLowerCase() === origen
+export const filtreNomsPropis: Filtre = ({ origen }) =>
+    origen?.toLowerCase() === origen
 
 export const filtreCaractersAbecedari = ({ origen }: Entrada): boolean => {
-    const paraulaAmbCaractersValids = filtreCaractersValids(origen)
+    const paraulaAmbCaractersValids = origen
+        ? filtreCaractersValids(origen)
+        : ''
     return paraulaAmbCaractersValids
         .split('')
         .every((lletra) => ABECEDARI.includes(lletra))

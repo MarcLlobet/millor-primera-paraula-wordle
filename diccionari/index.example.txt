@@ -1,3 +1,0 @@
-ParaulaConjugada1 ParaulaOrigen1 Definició
-ParaulaConjugada2 ParaulaOrigen2 Definició
-...

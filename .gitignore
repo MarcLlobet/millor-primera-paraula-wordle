@@ -24,10 +24,6 @@ dist-server
 *.sln
 *.sw?
 
-diccionari/
-!diccionari/index.html
-!diccionari/index.example.txt
-
 coverage
 
 .env

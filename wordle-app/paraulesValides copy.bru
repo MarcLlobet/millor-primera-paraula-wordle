@@ -1,0 +1,20 @@
+meta {
+  name: paraulesValides copy
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://{{HOST}}:{{PORT}}/api/paraules-valides
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "llargada": 5,
+    "encerts": [],
+    "descartades": [],
+    "malColocades": []
+  }
+}

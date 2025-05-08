@@ -86,12 +86,6 @@ jobs:
                   cp -r coverage/* dist/coverage/
               shell: bash
 
-            - name: Copy diccionari to dist 🗃️
-              run: |
-                  mkdir -p dist/diccionari
-                  cp -r diccionari/* dist/diccionari/
-              shell: bash
-
             - name: Setup Pages 🌎
               uses: actions/configure-pages@v5
 
